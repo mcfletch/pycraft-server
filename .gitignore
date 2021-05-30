@@ -1,0 +1,5 @@
+PycraftServer/.classpath
+PycraftServer/.settings/
+PycraftServer/target/
+bin/
+pkg/
