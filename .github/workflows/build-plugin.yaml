@@ -1,6 +1,9 @@
-name: Build Plugin
+name: Build and Release Plugin
 
-on: [push]
+on:
+  push:
+    tags:
+      - "v-*"
 
 jobs:
   build:
@@ -14,7 +17,7 @@ jobs:
           distribution: "adopt"
       - name: Run the Maven Build
         run: cd PycraftServer && mvn --batch-mode --update-snapshots package
-      - uses: actions/upload-artifact@v2
+      - uses: ncipollo/release-action@v1
         with:
-          name: Package
-          path: PycraftServer/target/PycraftServer*.jar
+          artifacts: "PycraftServer/target/PycraftServer*.jar"
+          token: ${{ secrets.GITHUB_TOKEN }}
