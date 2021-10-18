@@ -218,7 +218,7 @@ public class AppTest {
 
     PycraftAPI api = getMockApi();
     api.dispatch("1,__methods__,[]", false);
-    String[] expected = { "World", "Player", "Skeleton" };
+    String[] expected = { "World", "Player", "Skeleton", "PycraftServer" };
     for (String expect : expected) {
       assertTrue(api.lastResponse.indexOf(expect) > -1, api.lastResponse);
     }

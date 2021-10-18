@@ -19,7 +19,10 @@ import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.enchantments.Enchantment;
@@ -91,8 +94,8 @@ public class PycraftConverterRegistry {
 
         mapping.put(Vector.class, new VectorConverter(this, 3, Vector.class));
         mapping.put(Location.class, new LocationConverter(this, Location.class));
-        mapping.put(BlockBreakEvent.class, new BlockBreakEventConverter(this, BlockBreakEvent.class));
         mapping.put(AsyncPlayerChatEvent.class, new AsyncPlayerChatEventConverter(this, AsyncPlayerChatEvent.class));
+
         mapping.put(World.class, new WorldConverter(this));
         mapping.put(Player.class, new PlayerConverter(this));
         mapping.put(ItemStack.class, new ItemStackConverter(this));
@@ -115,6 +118,8 @@ public class PycraftConverterRegistry {
         interfaceConverters.add(new InterfaceConverter(ItemStack.class, new ItemStackConverter(this)));
         interfaceConverters.add(new InterfaceConverter(Enchantment.class, new EnchantmentConverter(this)));
         interfaceConverters.add(new InterfaceConverter(Collection.class, new CollectionConverter(this)));
+        interfaceConverters.add(new InterfaceConverter(BlockEvent.class, new BlockEventConverter(this)));
+        interfaceConverters.add(new InterfaceConverter(PlayerEvent.class, new PlayerEventConverter(this)));
 
     }
 

@@ -18,5 +18,5 @@ public interface IHandlerRegistry {
 
     public MessageHandler getHandler(String name);
 
-    public Map<String, Object> getDescription();
+    public Map<String, Object> getDescription(PycraftAPI api);
 }

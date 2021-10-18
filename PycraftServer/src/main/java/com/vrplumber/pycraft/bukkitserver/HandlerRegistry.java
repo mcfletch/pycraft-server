@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.bukkit.Art;
+import org.bukkit.Bukkit;
 import org.bukkit.Fluid;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,6 +36,8 @@ import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
@@ -74,10 +77,33 @@ class HandlerRegistry implements IHandlerRegistry {
         payload.register(this);
     }
 
-    public Map<String, Object> getDescription() {
+    public Map<String, Object> describePlugin(Plugin plugin) {
+        Map<String, Object> plugin_desc = new HashMap<String, Object>();
+        PluginDescriptionFile description = plugin.getDescription();
+        plugin_desc.put("version", description.getVersion());
+        plugin_desc.put("api", description.getAPIVersion());
+        plugin_desc.put("name", description.getName());
+        return plugin_desc;
+
+    }
+
+    public Map<String, Object> getDescription(PycraftAPI api) {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("type", "namespace");
         result.put("name", "");
+
+        Map<String, Object> plugins = new HashMap<String, Object>();
+        for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
+            plugins.put(plugin.getName(), describePlugin(plugin));
+        }
+        result.put("plugins", plugins);
+
+        Map<String, Object> server_desc = new HashMap<String, Object>();
+        Server server = api.getServer();
+        server_desc.put("version", server.getVersion());
+        server_desc.put("bukkit_version", server.getBukkitVersion());
+        result.put("server", server_desc);
+
         List<Map<String, Object>> commands = new ArrayList<Map<String, Object>>();
         for (String key : implementations.keySet()) {
             MessageHandler handler = implementations.get(key);
@@ -162,6 +188,7 @@ class HandlerRegistry implements IHandlerRegistry {
         exposeClass(Entity.class);
         exposeClass(EntityType.class);
         exposeClass(Server.class);
+        exposeClass(Bukkit.class);
         exposeClass(Biome.class);
         exposeClass(BlockFace.class);
         exposeClass(PistonMoveReaction.class);

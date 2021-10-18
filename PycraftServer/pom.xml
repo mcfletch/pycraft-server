@@ -5,7 +5,7 @@
 
   <groupId>com.vrplumber.pycraft.bukkitserver</groupId>
   <artifactId>PycraftServer</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 
   <name>PycraftServer</name>
   <!-- FIXME change it to the project's website -->

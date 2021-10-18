@@ -55,6 +55,7 @@ public abstract class NamespaceHandler implements MessageHandler {
         Map<String, Object> clsDesc = new HashMap<String, Object>();
 
         clsDesc.put("name", cls.getSimpleName());
+        clsDesc.put("fullName", cls.getCanonicalName());
         clsDesc.put("isEnum", cls.isEnum());
         clsDesc.put("isKeyed", Keyed.class.isAssignableFrom(cls));
         List<String> interfaceNames = new ArrayList<String>();

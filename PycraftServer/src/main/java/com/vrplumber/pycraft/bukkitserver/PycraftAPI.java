@@ -205,6 +205,8 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
   // }
   public boolean onEvent(Event event) {
     /* Handle user's subscriptions and sending them the events */
+    Logger log = getLogger();
+    log.info(String.format("onEvent: %s", event.getEventName()));
     PycraftMessage request = this.subscriptions.get(event.getEventName());
     if (request != null) {
       this.sendResponse(request.messageId, event);
@@ -272,7 +274,7 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
       }
     } else if (message.method.get(0).equals("__methods__")) {
       message.finished = true;
-      this.sendResponse(message.messageId, registry.getDescription());
+      this.sendResponse(message.messageId, registry.getDescription(this));
     } else {
       List<String> response = Arrays.asList("unknown-method", message.method.get(0));
       message.finished = true;

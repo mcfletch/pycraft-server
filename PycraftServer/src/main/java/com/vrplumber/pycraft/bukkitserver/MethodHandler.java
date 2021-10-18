@@ -49,7 +49,7 @@ class MethodHandler implements MessageHandler {
         result.put("static", (staticMethod && !injectedMethod));
         result.put("injected", injectedMethod);
         result.put("name", pointer.getName());
-        result.put("__doc__", pointer.toGenericString());
+        // result.put("cls", pointer.getDeclaringClass().getCanonicalName());
         result.put("argcount", pointer.getParameterCount());
         List<String> typeNames = new ArrayList<String>();
         for (Class cls : pointer.getParameterTypes()) {
