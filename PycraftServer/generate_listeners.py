@@ -5,7 +5,9 @@ public void on%(class_name)s(%(class_name)s event) {
     handleEvent(event);
 }
 """
-class_names = [s.strip() for s in '''
+class_names = [
+    s.strip()
+    for s in """
 player.AsyncPlayerChatEvent
 player.AsyncPlayerPreLoginEvent
 # player.PlayerAchievementAwardedEvent
@@ -93,7 +95,7 @@ entity.AreaEffectCloudApplyEvent
 entity.CreatureSpawnEvent
 entity.CreeperPowerEvent
 entity.EnderDragonChangePhaseEvent
-entity.EntityAirChangeEvent
+# entity.EntityAirChangeEvent
 entity.EntityBreakDoorEvent
 entity.EntityBreedEvent
 entity.EntityChangeBlockEvent
@@ -191,16 +193,20 @@ world.WorldInitEvent
 world.WorldLoadEvent
 world.WorldSaveEvent
 world.WorldUnloadEvent
-'''.strip().splitlines() if not s.startswith('#')]
+""".strip().splitlines()
+    if not s.startswith("#")
+]
+
+
 def main():
-    for module,class_name in [x.split('.') for x in class_names]:
-        print('import org.bukkit.event.%(module)s.%(class_name)s;'%locals())
-    for module,class_name in [x.split('.') for x in class_names]:
+    for module, class_name in [x.split(".") for x in class_names]:
+        print("import org.bukkit.event.%(module)s.%(class_name)s;" % locals())
+    for module, class_name in [x.split(".") for x in class_names]:
         print(template % locals())
-    
-    for module,class_name in [x.split('.') for x in class_names]:
+
+    for module, class_name in [x.split(".") for x in class_names]:
         print(class_name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

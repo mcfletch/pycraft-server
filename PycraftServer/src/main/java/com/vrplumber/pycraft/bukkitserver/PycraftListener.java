@@ -649,12 +649,6 @@ public class PycraftListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onEntityAirChangeEvent(EntityAirChangeEvent event) {
-        EntityAirChangeEvent.getHandlerList();
-        handleEvent(event);
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityBreakDoorEvent(EntityBreakDoorEvent event) {
         EntityBreakDoorEvent.getHandlerList();
         handleEvent(event);
