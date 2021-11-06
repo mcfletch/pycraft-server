@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerEvent;
+
 public class PycraftMessage {
 
   static private Pattern headerPattern = Pattern.compile("^(\\d+),([a-z_A-Z0-9.]+),(.*)$");
@@ -55,6 +59,34 @@ public class PycraftMessage {
     } else {
       return null;
     }
+  }
+
+  private boolean matchPlayer(Event event, String filterName) {
+    if (event instanceof PlayerEvent) {
+      if (filterName.equals("*")) {
+        return true;
+      } else {
+        Player player = ((PlayerEvent) event).getPlayer();
+        if (player.getName().startsWith(filterName)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public boolean filterEvent(Event event, PycraftAPI api) {
+    if (this.payload.size() > 2) {
+      // Has a filter...
+      Integer filterType = api.expectInteger(this, 2);
+      if (filterType == 1) {
+        /* Filter by username */
+        String filterName = api.expectString(this, 3);
+        return matchPlayer(event, filterName);
+      }
+      return false;
+    }
+    return true;
   }
 
 }

@@ -17,7 +17,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 public class PycraftServerPlugin extends JavaPlugin {
 
   private APIServer endpoint;
-  private PycraftListener listener;
+  public Listener listener;
   private IHandlerRegistry registry;
 
   public void setAPIServer(APIServer endpoint) {
@@ -49,7 +49,10 @@ public class PycraftServerPlugin extends JavaPlugin {
     registry.registerHandlers();
     endpoint = new APIServer(registry);
     endpoint.setPlugin(this);
-    getServer().getPluginManager().registerEvents(new PycraftListener(this), this);
+    if (this.listener == null) {
+      this.listener = new PycraftListener(this);
+    }
+    getServer().getPluginManager().registerEvents(this.listener, this);
     endpoint.createServer();
   }
 

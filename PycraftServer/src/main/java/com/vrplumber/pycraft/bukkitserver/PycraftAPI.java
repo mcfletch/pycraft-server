@@ -209,7 +209,14 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
     log.info(String.format("onEvent: %s", event.getEventName()));
     PycraftMessage request = this.subscriptions.get(event.getEventName());
     if (request != null) {
-      this.sendResponse(request.messageId, event);
+      try {
+        if (request.filterEvent(event, this)) {
+          this.sendResponse(request.messageId, event);
+        }
+      } catch (Exception e) {
+        log.warning(String.format("Failed filtering event: %s", event.toString()));
+        return true;
+      }
       return true;
     }
     return false;

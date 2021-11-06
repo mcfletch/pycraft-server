@@ -2,14 +2,12 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>com.vrplumber.pycraft.bukkitserver</groupId>
   <artifactId>PycraftServer</artifactId>
   <version>1.0.1</version>
 
   <name>PycraftServer</name>
-  <!-- FIXME change it to the project's website -->
-  <url>https://github.com/mcfletch/pycraft/</url>
+  <url>https://github.com/mcfletch/pycraft-server/</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,6 +28,12 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+    <!-- <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.16.1-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency> -->
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
@@ -53,11 +57,62 @@
       <version>1.8.4</version>
       <scope>test</scope>
     </dependency>
+    <!-- <dependency>
+      <groupId>com.github.seeseemelk</groupId>
+      <artifactId>MockBukkit-v1.17</artifactId>
+      <version>1.10.3</version>
+      <scope>test</scope>
+    </dependency> -->
     <dependency>
       <groupId>com.github.seeseemelk</groupId>
       <artifactId>MockBukkit-v1.16</artifactId>
-      <version>0.34.1</version>
+      <version>1.5.2</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <!-- required in all cases -->
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-api</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+    <dependency>
+      <!-- optional helpers, might be superfluous depending on your use case -->
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-util</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-aether-provider</artifactId>
+      <version>3.3.9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-resolver-provider</artifactId>
+      <version>3.8.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.resolver</groupId>
+      <artifactId>maven-resolver-connector-basic</artifactId>
+      <version>1.6.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.resolver</groupId>
+      <artifactId>maven-resolver-transport-http</artifactId>
+      <version>1.6.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.5</version>
     </dependency>
   </dependencies>
   <repositories>
@@ -91,13 +146,16 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
+          <configuration>
+            <release>14</release>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
           <configuration>
             <additionalClasspathElements>
-              <additionalClasspathElement>${basedir}/target/dependency/MockBukkit-v1.16-0.34.1.jar</additionalClasspathElement>
+              <additionalClasspathElement>${basedir}/target/dependency/MockBukkit-v1.16-1.5.2.jar</additionalClasspathElement>
             </additionalClasspathElements>
           </configuration>
         </plugin>

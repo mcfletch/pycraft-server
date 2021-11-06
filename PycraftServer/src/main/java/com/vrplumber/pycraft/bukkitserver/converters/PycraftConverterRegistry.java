@@ -1,5 +1,7 @@
 package com.vrplumber.pycraft.bukkitserver.converters;
 
+import org.bukkit.plugin.java.JavaPluginLoader;
+
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import org.bukkit.util.Vector;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.GameRule;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -42,6 +45,7 @@ import com.vrplumber.pycraft.bukkitserver.converters.BlockConverter;
 import com.vrplumber.pycraft.bukkitserver.converters.EntityConverter;
 import com.vrplumber.pycraft.bukkitserver.converters.WorldConverter;
 import com.vrplumber.pycraft.bukkitserver.converters.UUIDConverter;
+import com.vrplumber.pycraft.bukkitserver.converters.GameRuleConverter;
 
 public class PycraftConverterRegistry {
     /* Registers .class => Converter.toJava(api, value, finalType) converter */
@@ -101,6 +105,7 @@ public class PycraftConverterRegistry {
         mapping.put(ItemStack.class, new ItemStackConverter(this));
         mapping.put(Enchantment.class, new EnchantmentConverter(this));
         mapping.put(EnchantmentWrapper.class, new EnchantmentConverter(this));
+        mapping.put(GameRuleConverter.class, new GameRuleConverter(this));
 
         // Now the interfaces, which require a linear scan, so we want to reduce
         // usage...
@@ -120,6 +125,7 @@ public class PycraftConverterRegistry {
         interfaceConverters.add(new InterfaceConverter(Collection.class, new CollectionConverter(this)));
         interfaceConverters.add(new InterfaceConverter(BlockEvent.class, new BlockEventConverter(this)));
         interfaceConverters.add(new InterfaceConverter(PlayerEvent.class, new PlayerEventConverter(this)));
+        interfaceConverters.add(new InterfaceConverter(GameRule.class, new GameRuleConverter(this)));
 
     }
 
