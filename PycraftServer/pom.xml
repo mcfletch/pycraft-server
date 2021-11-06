@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.vrplumber.pycraft.bukkitserver</groupId>
   <artifactId>PycraftServer</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 
   <name>PycraftServer</name>
   <url>https://github.com/mcfletch/pycraft-server/</url>
