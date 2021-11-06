@@ -137,6 +137,9 @@ public class PycraftConverterRegistry {
         if (converter != null) {
             return converter.toJava(api, value, targetType);
         }
+        if (value instanceof Boolean) {
+            return value;
+        }
 
         return (Object) null;
     }

@@ -37,9 +37,10 @@ public class PycraftServerPlugin extends JavaPlugin {
     super();
   }
 
-  protected PycraftServerPlugin(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder,
-      File file) {
+  protected PycraftServerPlugin(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file,
+      Listener listener) {
     super(loader, description, dataFolder, file);
+    this.listener = listener;
   }
 
   @Override
