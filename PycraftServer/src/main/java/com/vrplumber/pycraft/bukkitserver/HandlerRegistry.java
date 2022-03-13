@@ -44,6 +44,7 @@ import org.bukkit.util.Vector;
 import java.util.logging.Handler;
 import org.bukkit.block.data.type.*;
 import org.bukkit.configuration.MemorySection;
+import org.bukkit.inventory.meta.*;
 
 class HandlerRegistry implements IHandlerRegistry {
     private static List<Class> handlers;
@@ -140,6 +141,7 @@ class HandlerRegistry implements IHandlerRegistry {
         if (cls == null) {
             return;
         } else if (!shouldExpose((cls))) {
+
             return;
         }
         String name = cls.getSimpleName();
@@ -256,6 +258,27 @@ class HandlerRegistry implements IHandlerRegistry {
 
         exposeClass(EntityEvent.class);
         exposeClass(MemorySection.class);
+
+        // exposeClass(AxolotlBucketMeta.class);
+        exposeClass(BannerMeta.class);
+        exposeClass(BlockDataMeta.class);
+        exposeClass(BlockStateMeta.class);
+        exposeClass(BookMeta.class);
+        // exposeClass(BundleMeta.class);
+        exposeClass(CompassMeta.class);
+        exposeClass(CrossbowMeta.class);
+        exposeClass(Damageable.class);
+        exposeClass(EnchantmentStorageMeta.class);
+        exposeClass(FireworkEffectMeta.class);
+        exposeClass(FireworkMeta.class);
+        exposeClass(KnowledgeBookMeta.class);
+        exposeClass(LeatherArmorMeta.class);
+        exposeClass(MapMeta.class);
+        exposeClass(PotionMeta.class);
+        exposeClass(SkullMeta.class);
+        exposeClass(SpawnEggMeta.class);
+        exposeClass(SuspiciousStewMeta.class);
+        exposeClass(TropicalFishBucketMeta.class);
 
         registerImplementation("World", new WorldHandler());
         registerImplementation("echo", new EchoHandler());

@@ -26,6 +26,8 @@ import java.io.InputStream;
 import java.net.Socket;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -37,9 +39,13 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.util.Vector;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
@@ -520,14 +526,62 @@ public class AppTest {
 
   }
 
-  // @Test
-  // public void setGameRule() {
-  // // another case where we are missing underlying machinery to run the actual
-  // test
-  // api.dispatch("12,World.setGameRule,[\"world\", \"keepInventory\", true]",
-  // false);
-  // World world = server.getWorlds().get(0);
-  // assertTrue(world.getGameRuleValue(GameRule.KEEP_INVENTORY));
-  // }
+  @Test
+  public void matchBlockLocation() {
+    World world = server.getWorld("sample-world");
+    if (world != null) {
+      Event event = new BlockBreakEvent(world.getBlockAt(new Location(world, 0, 0, 0)), player);
+      PycraftMessage message = new PycraftMessage();
+      message.payload = new ArrayList<Object>();
+      message.payload.add("subscribe");
+      message.payload.add("BlockBreakEvent");
+      message.payload.add(2); // magic number being "boundingBox"
+
+      List<Double> minimum = new ArrayList<Double>();
+      minimum.add(0.);
+      minimum.add(0.);
+      minimum.add(0.);
+      List<Double> maximum = new ArrayList<Double>();
+      maximum.add(1.);
+      maximum.add(1.);
+      maximum.add(1.);
+
+      message.payload.add(minimum);
+      message.payload.add(maximum);
+      assertTrue(message.filterEvent(event, api));
+      event = new BlockBreakEvent(world.getBlockAt(new Location(world, -1, 0, 0)), player);
+      assertFalse(message.filterEvent(event, api));
+
+    }
+  }
+
+  @Test
+  public void testPotionData() {
+    PotionData potionData = new PotionData(PotionType.WATER_BREATHING, false, false);
+    PycraftConverterRegistry registry = new PycraftConverterRegistry();
+    PycraftAPI api = getMockApi();
+    String encoded = registry.fromJava(api, potionData);
+    assertTrue(encoded.startsWith("{"));
+    assertTrue(encoded.endsWith("}"));
+    assertTrue(encoded.contains("type"));
+    assertTrue(encoded.contains("WATER_BREATHING"));
+    assertTrue(encoded.contains("upgraded"));
+    assertTrue(encoded.contains("extended"));
+    Map source = new HashMap<String, Object>();
+    source.put("type", "WATER_BREATHING");
+    PotionData result = (PotionData) registry.toJava(PotionData.class, api, source);
+    assertTrue(result.getType() == PotionType.WATER_BREATHING);
+  }
+
+  @Test
+  public void testPotionAPI() {
+    ItemStack potion = new ItemStack(Material.POTION);
+    player.getInventory().setItem(0, potion);
+    api.dispatch(String.format("1,PotionMeta.setBasePotionData,[[0,\"%s\"],{\"type\":\"WATER_BREATHING\"}]",
+        player.getUniqueId().toString()), false);
+    // PotionMeta meta = (PotionMeta) potion.getItemMeta();
+    // assertTrue(meta.getBasePotionData().getType() == PotionType.WATER_BREATHING);
+
+  }
 
 }

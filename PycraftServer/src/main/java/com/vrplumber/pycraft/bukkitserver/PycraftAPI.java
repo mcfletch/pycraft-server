@@ -331,7 +331,7 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
   }
 
   public Integer expectInteger(PycraftMessage message, Integer index) throws InvalidParameterException {
-    return (Integer) expectType(message, index, Boolean.class);
+    return (Integer) expectType(message, index, Integer.class);
   }
 
   // public EntityType expectEntityType(PycraftMessage message, Integer index)

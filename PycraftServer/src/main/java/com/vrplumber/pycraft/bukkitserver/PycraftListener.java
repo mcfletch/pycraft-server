@@ -1080,17 +1080,18 @@ public class PycraftListener implements Listener {
         handleEvent(event);
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onVehicleMoveEvent(VehicleMoveEvent event) {
-        VehicleMoveEvent.getHandlerList();
-        handleEvent(event);
-    }
+    // Fills the logs with constant updates...
+    // @EventHandler(priority = EventPriority.NORMAL)
+    // public void onVehicleMoveEvent(VehicleMoveEvent event) {
+    //     VehicleMoveEvent.getHandlerList();
+    //     handleEvent(event);
+    // }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onVehicleUpdateEvent(VehicleUpdateEvent event) {
-        VehicleUpdateEvent.getHandlerList();
-        handleEvent(event);
-    }
+    // @EventHandler(priority = EventPriority.NORMAL)
+    // public void onVehicleUpdateEvent(VehicleUpdateEvent event) {
+    //     VehicleUpdateEvent.getHandlerList();
+    //     handleEvent(event);
+    // }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onLightningStrikeEvent(LightningStrikeEvent event) {

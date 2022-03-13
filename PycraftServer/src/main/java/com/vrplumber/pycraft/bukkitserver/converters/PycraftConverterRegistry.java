@@ -1,6 +1,7 @@
 package com.vrplumber.pycraft.bukkitserver.converters;
 
 import org.bukkit.plugin.java.JavaPluginLoader;
+import org.bukkit.potion.PotionData;
 
 import java.util.Map;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.lang.Class;
 import java.lang.reflect.Type;
+import java.net.InetAddress;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -27,6 +29,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
@@ -46,6 +49,8 @@ import com.vrplumber.pycraft.bukkitserver.converters.EntityConverter;
 import com.vrplumber.pycraft.bukkitserver.converters.WorldConverter;
 import com.vrplumber.pycraft.bukkitserver.converters.UUIDConverter;
 import com.vrplumber.pycraft.bukkitserver.converters.GameRuleConverter;
+import com.vrplumber.pycraft.bukkitserver.converters.ItemMetaConverter;
+import com.vrplumber.pycraft.bukkitserver.converters.PotionDataConverter;
 
 public class PycraftConverterRegistry {
     /* Registers .class => Converter.toJava(api, value, finalType) converter */
@@ -105,7 +110,8 @@ public class PycraftConverterRegistry {
         mapping.put(ItemStack.class, new ItemStackConverter(this));
         mapping.put(Enchantment.class, new EnchantmentConverter(this));
         mapping.put(EnchantmentWrapper.class, new EnchantmentConverter(this));
-        mapping.put(GameRuleConverter.class, new GameRuleConverter(this));
+        mapping.put(GameRule.class, new GameRuleConverter(this));
+        mapping.put(PotionData.class, new PotionDataConverter(this));
 
         // Now the interfaces, which require a linear scan, so we want to reduce
         // usage...
@@ -126,6 +132,7 @@ public class PycraftConverterRegistry {
         interfaceConverters.add(new InterfaceConverter(BlockEvent.class, new BlockEventConverter(this)));
         interfaceConverters.add(new InterfaceConverter(PlayerEvent.class, new PlayerEventConverter(this)));
         interfaceConverters.add(new InterfaceConverter(GameRule.class, new GameRuleConverter(this)));
+        interfaceConverters.add(new InterfaceConverter(ItemMeta.class, new ItemMetaConverter(this)));
 
     }
 

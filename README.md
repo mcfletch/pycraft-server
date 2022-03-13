@@ -57,7 +57,7 @@ internet.
 To build from source:
 ```
 mvn -e package
-cp target/PycraftServer-1.0.2.jar ${YOUR_WORLD}/plugins/
+cp target/PycraftServer-1.0.3.jar ${YOUR_WORLD}/plugins/
 ../run.py -e -d ${YOUR_WORLD}
 ```
 

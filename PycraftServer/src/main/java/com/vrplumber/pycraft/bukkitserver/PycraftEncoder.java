@@ -38,7 +38,7 @@ public class PycraftEncoder {
             // + "(([\\\\][n\"]|[^\\\"])*)"
             // + "[\"][,]?");
             Pattern.compile("^\"([^\"\\\\]*(?:\\\\.|[^\"\\\\]*)*)\"");
-    static private Pattern whiteSpace = Pattern.compile("^[ \\t\\n\\r,]+");
+    static private Pattern whiteSpace = Pattern.compile("^[ \\t\\n\\r:,]+");
 
     public PycraftEncoder() {
         this.registry = new PycraftConverterRegistry();
@@ -95,6 +95,25 @@ public class PycraftEncoder {
                                     throw new InvalidParameterException(
                                             String.format("Malformed list, more closing brackets then opening ones"));
                                 }
+                            } else if (line.startsWith("{")) {
+                                List<Object> child = new ArrayList<Object>();
+                                result = child;
+                                stack.add(result);
+                                consumed = 1;
+                            } else if (line.startsWith("}")) {
+                                consumed = 1;
+                                Map<String, Object> corrected = new HashMap<String, Object>();
+                                for (int i = 0; i < result.size(); i += 2) {
+                                    Object key = result.get(i);
+                                    Object value = result.get(i + 1);
+                                    if (!(key instanceof String)) {
+                                        key = key.toString();
+                                    }
+                                    corrected.put((String) key, value);
+                                }
+                                stack.remove(result);
+                                result = stack.get(stack.size() - 1);
+                                result.add(corrected);
                             } else if (line.startsWith("true")) {
                                 result.add(Boolean.TRUE);
                                 consumed = 4;
@@ -118,6 +137,7 @@ public class PycraftEncoder {
             }
         }
         return stack.get(0);
+
     }
 
     public String encode(PycraftAPI api, Object message) {

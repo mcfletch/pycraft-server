@@ -10,9 +10,19 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockEvent;
+import org.bukkit.event.entity.EntityEvent;
+import org.bukkit.event.entity.EntityTeleportEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.player.PlayerBedLeaveEvent;
+import org.bukkit.event.player.PlayerBucketEvent;
 import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.util.Vector;
 
 public class PycraftMessage {
 
@@ -61,13 +71,31 @@ public class PycraftMessage {
     }
   }
 
-  private boolean matchPlayer(Event event, String filterName) {
-    if (event instanceof PlayerEvent) {
+  private boolean matchEntity(Event event, String filterName) {
+    if (event instanceof EntityEvent) {
       if (filterName.equals("*")) {
         return true;
       } else {
-        Player player = ((PlayerEvent) event).getPlayer();
-        if (player.getName().startsWith(filterName)) {
+        Entity entity = ((EntityEvent) event).getEntity();
+        if (entity.getName().startsWith(filterName)) {
+          return true;
+        } else if (entity.getUniqueId().toString().startsWith(filterName)) {
+          return true;
+        }
+        return false;
+      }
+    }
+    return false;
+  }
+
+  private boolean filterLocation(Location loc, Vector minimum, Vector maximum) {
+    /* is loc in area minimum => maximum inclusive ? */
+    int x = loc.getBlockX();
+    int y = loc.getBlockY();
+    int z = loc.getBlockZ();
+    if (x >= minimum.getBlockX() && x <= maximum.getBlockX()) {
+      if (y >= minimum.getBlockY() && y <= maximum.getBlockY()) {
+        if (z >= minimum.getBlockZ() && z <= maximum.getBlockZ()) {
           return true;
         }
       }
@@ -82,7 +110,62 @@ public class PycraftMessage {
       if (filterType == 1) {
         /* Filter by username */
         String filterName = api.expectString(this, 3);
-        return matchPlayer(event, filterName);
+        return matchEntity(event, filterName);
+      } else if (filterType == 2) {
+        /* Filter by block area [minx,miny,minz],[maxx,maxy,maxz] */
+        Vector minimum = (Vector) (api.expectType(this, 3, Vector.class));
+        Vector maximum = (Vector) (api.expectType(this, 4, Vector.class));
+        if (event instanceof BlockEvent) {
+          Location loc = ((BlockEvent) event).getBlock().getLocation();
+          if (filterLocation(loc, minimum, maximum)) {
+            return true;
+          }
+        } else if (event instanceof EntityTeleportEvent) {
+          Location loc = ((EntityTeleportEvent) event).getFrom();
+          if (filterLocation(loc, minimum, maximum)) {
+            return true;
+          }
+          loc = ((EntityTeleportEvent) event).getTo();
+          if (filterLocation(loc, minimum, maximum)) {
+            return true;
+          }
+        } else if (event instanceof EntityEvent) {
+          Location loc = ((EntityEvent) event).getEntity().getLocation();
+          if (filterLocation(loc, minimum, maximum)) {
+            return true;
+          }
+        }
+        if (event instanceof PlayerBedEnterEvent) {
+          Location loc = ((PlayerBedEnterEvent) event).getBed().getLocation();
+          if (filterLocation(loc, minimum, maximum)) {
+            return true;
+          }
+        }
+        if (event instanceof PlayerBedLeaveEvent) {
+          Location loc = ((PlayerBedLeaveEvent) event).getBed().getLocation();
+          if (filterLocation(loc, minimum, maximum)) {
+            return true;
+          }
+        }
+        if (event instanceof PlayerBucketEvent) {
+          Location loc = ((PlayerBucketEvent) event).getBlock().getLocation();
+          if (filterLocation(loc, minimum, maximum)) {
+            return true;
+          }
+          loc = ((PlayerBucketEvent) event).getBlockClicked().getLocation();
+          if (filterLocation(loc, minimum, maximum)) {
+            return true;
+          }
+        }
+        if (event instanceof PlayerInteractEvent) {
+          PlayerInteractEvent pie = (PlayerInteractEvent) event;
+          if (pie.hasBlock()) {
+            Location loc = pie.getClickedBlock().getLocation();
+            if (filterLocation(loc, minimum, maximum)) {
+              return true;
+            }
+          }
+        }
       }
       return false;
     }
