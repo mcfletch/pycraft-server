@@ -54,7 +54,6 @@ the Internet! PycraftServer is intended to let you control *anything* on the
 server and you do **NOT** want that being done by random people on the 
 internet.
 
-To build from source:
 ```
 mvn -e package
 cp target/PycraftServer-1.0.3.jar ${YOUR_WORLD}/plugins/

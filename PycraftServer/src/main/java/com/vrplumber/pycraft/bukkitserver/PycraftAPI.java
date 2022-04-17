@@ -91,7 +91,7 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
   public BufferedReader reader;
   public PycraftEncoder encoder;
   public PycraftConverterRegistry converterRegistry;
-  public Map<String, PycraftMessage> subscriptions;
+  public Map<String, List<PycraftMessage>> subscriptions;
 
   public String lastResponse;
 
@@ -140,7 +140,7 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
     this.registry = registry;
     this.converterRegistry = new PycraftConverterRegistry();
     this.encoder = new PycraftEncoder(this.converterRegistry);
-    this.subscriptions = new HashMap<String, PycraftMessage>();
+    this.subscriptions = new HashMap<String, List<PycraftMessage>>();
     try {
       InputStream is = socket.getInputStream();
       OutputStream os = socket.getOutputStream();
@@ -206,20 +206,24 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
   public boolean onEvent(Event event) {
     /* Handle user's subscriptions and sending them the events */
     Logger log = getLogger();
-    log.info(String.format("onEvent: %s", event.getEventName()));
-    PycraftMessage request = this.subscriptions.get(event.getEventName());
-    if (request != null) {
+    List<PycraftMessage> watchers = this.subscriptions.get(event.getEventName());
+    if (watchers == null) {
+      return false;
+    }
+    boolean processed = false;
+    for (int index = 0; index < watchers.size(); index++) {
+      PycraftMessage request = watchers.get(index);
       try {
         if (request.filterEvent(event, this)) {
+          log.info(String.format("onEvent: %s", event.getEventName()));
           this.sendResponse(request.messageId, event);
+          processed = true;
         }
       } catch (Exception e) {
         log.warning(String.format("Failed filtering event: %s", event.toString()));
-        return true;
       }
-      return true;
     }
-    return false;
+    return processed;
   };
 
   public void dispatch(String line, boolean async) {

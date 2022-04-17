@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.security.InvalidParameterException;
 import com.vrplumber.pycraft.bukkitserver.MessageHandler;
+import java.util.logging.Logger;
 
 class SubscriptionHandler implements MessageHandler {
     /* Handle a method by dispatching to a method on a class instance */
@@ -31,14 +32,39 @@ class SubscriptionHandler implements MessageHandler {
     }
 
     public Object handle(PycraftAPI api, PycraftMessage message) {
+        // TODO: should hold a lock for this whole operation as we're
+        // mutating a structure
+        Logger log = api.getLogger();
         String name = api.expectString(message, 0);
         Boolean enabled = api.expectBoolean(message, 1);
         if (enabled) {
-            api.subscriptions.put(name, message);
-            return Boolean.TRUE;
+            log.info(String.format("Subscribing for events %s for message id %d", name, message.messageId));
+            List<PycraftMessage> handlers = api.subscriptions.get(name);
+            if (handlers == null) {
+                log.info(String.format("  Creating handler list for %s", name));
+                handlers = new ArrayList<PycraftMessage>();
+                api.subscriptions.put(name, handlers);
+            }
+            log.info(String.format("  Added to handler list %s", name));
+            handlers.add(message);
+            return (Integer) message.messageId;
         } else {
-            api.subscriptions.remove(name);
-            return Boolean.FALSE;
+            Integer messageId = api.expectInteger(message, 2);
+            log.info(String.format("Unsubscribing for events %s for message id %d", name, messageId));
+            List<PycraftMessage> handlers = api.subscriptions.get(name);
+            if (handlers == null) {
+                log.info(String.format("  No handlers were registered for %s", name));
+                return 0;
+            }
+            Boolean found = Boolean.FALSE;
+            for (int index = handlers.size() - 1; index > -1; index--) {
+                if (handlers.get(index).messageId == messageId) {
+                    log.info(String.format("  Removed handler from %s", name));
+                    handlers.remove(index);
+                    found = true;
+                }
+            }
+            return (Integer) (found ? messageId : 0);
         }
     }
 
