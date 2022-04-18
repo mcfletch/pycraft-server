@@ -486,6 +486,12 @@ public class AppTest {
 
   }
 
+  @Test
+  public void storageName() {
+    PycraftMessage msg = PycraftMessage.parseHeader("2,x=moo.That,[23]", api);
+    assertTrue(msg.resultName.equals("x"));
+  }
+
   // Bukkit unimplemented...
   // @Test
   // public void treeTypeConverter() {
@@ -577,10 +583,10 @@ public class AppTest {
   public void testPotionAPI() {
     ItemStack potion = new ItemStack(Material.POTION);
     player.getInventory().setItem(0, potion);
-    api.dispatch(String.format("1,PotionMeta.setBasePotionData,[[0,\"%s\"],{\"type\":\"WATER_BREATHING\"}]",
+    api.dispatch(String.format("1,x=PotionMeta.setBasePotionData,[[0,\"%s\"],{\"type\":\"WATER_BREATHING\"}]",
         player.getUniqueId().toString()), false);
-    // PotionMeta meta = (PotionMeta) potion.getItemMeta();
-    // assertTrue(meta.getBasePotionData().getType() == PotionType.WATER_BREATHING);
+    // api.dispatch(String.format("1,Potion.setMetadata,[[0,\"%s\"],{\"ref\":\"x\"}]",
+    // player.getUniqueId().toString()), false);
 
   }
 

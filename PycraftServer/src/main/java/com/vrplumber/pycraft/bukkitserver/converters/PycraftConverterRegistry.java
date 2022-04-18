@@ -13,6 +13,7 @@ import java.util.UUID;
 import java.lang.Class;
 import java.lang.reflect.Type;
 import java.net.InetAddress;
+import java.security.InvalidParameterException;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -137,6 +138,16 @@ public class PycraftConverterRegistry {
     }
 
     public Object toJava(Class targetType, PycraftAPI api, Object value) {
+        Object ref = fromRef(api, value);
+        if (ref != null) {
+            if (targetType.isAssignableFrom(ref.getClass())) {
+                return ref;
+            } else {
+                throw new InvalidParameterException(String.format(
+                        "Reference to %s cannot be converted to a %s",
+                        ref.getClass().getName(), targetType.getName()));
+            }
+        }
         Converter converter = mapping.get(targetType);
         if (converter == null) {
             converter = getConverterByTarget(targetType);
@@ -170,6 +181,23 @@ public class PycraftConverterRegistry {
             if (converter.match(value)) {
                 return converter.converter;
             }
+        }
+        return null;
+    }
+
+    public Object fromRef(PycraftAPI api, Object value) {
+        if (value instanceof Map<?, ?>) {
+            Map<String, Object> mapValue = (Map<String, Object>) value;
+            Object name = mapValue.get("ref");
+            if (name == null) {
+                return null;
+            }
+            Object ref = api.namespace.get(name);
+            if (ref == null) {
+                throw new InvalidParameterException(
+                        String.format("Unable to find reference with name %s", name));
+            }
+            return ref;
         }
         return null;
     }

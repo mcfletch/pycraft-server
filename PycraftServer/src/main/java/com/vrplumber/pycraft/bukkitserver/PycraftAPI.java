@@ -50,6 +50,7 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
 
   private boolean wanted = true;
   private World world = null;
+  public Map<String, Object> namespace = null;
 
   public void setWanted(boolean wanted) {
     this.wanted = wanted;
@@ -141,6 +142,7 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
     this.converterRegistry = new PycraftConverterRegistry();
     this.encoder = new PycraftEncoder(this.converterRegistry);
     this.subscriptions = new HashMap<String, List<PycraftMessage>>();
+    this.namespace = new HashMap<String, Object>();
     try {
       InputStream is = socket.getInputStream();
       OutputStream os = socket.getOutputStream();
@@ -250,6 +252,9 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
           Object response = handler.handle(this, message);
           if (!message.finished) {
             this.sendResponse(message.messageId, response);
+          }
+          if (message.resultName != null && !message.resultName.equals("")) {
+            this.namespace.put(message.resultName, response);
           }
           return response;
         } catch (InvalidParameterException e) {

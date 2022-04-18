@@ -30,7 +30,7 @@ import org.bukkit.util.Vector;
 
 public class PycraftMessage {
 
-  static private Pattern headerPattern = Pattern.compile("^(\\d+),([a-z_A-Z0-9.]+),(.*)$");
+  static private Pattern headerPattern = Pattern.compile("^(\\d+),([a-zA-Z]+[=])?([a-z_A-Z0-9.]+),(.*)$");
 
   public Integer messageId = 0;
   public List<String> method = null;
@@ -38,6 +38,7 @@ public class PycraftMessage {
   public List<MessageHandler> implementation = null;
   public Object instance = null;
   public boolean finished = false;
+  public String resultName = null;
 
   public void addImplementation(MessageHandler handler) {
     if (implementation == null) {
@@ -63,12 +64,16 @@ public class PycraftMessage {
     if (match.find()) {
       PycraftMessage result = new PycraftMessage();
       result.messageId = Integer.parseInt(match.group(1));
-      String fullMethod = match.group(2);
+      result.resultName = match.group(2);
+      if (result.resultName != null && result.resultName.length() > 1) {
+        result.resultName = result.resultName.substring(0, result.resultName.length() - 1);
+      }
+      String fullMethod = match.group(3);
       result.method = new ArrayList<String>();
       for (String fragment : fullMethod.split("[.]")) {
         result.method.add(fragment);
       }
-      result.payload = api.encoder.decode(match.group(3));
+      result.payload = api.encoder.decode(match.group(4));
       return result;
     } else {
       return null;
