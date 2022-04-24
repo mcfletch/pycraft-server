@@ -26,6 +26,7 @@ import org.bukkit.World;
 import org.bukkit.GameRule;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockEvent;
+import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -132,6 +133,7 @@ public class PycraftConverterRegistry {
         interfaceConverters.add(new InterfaceConverter(Collection.class, new CollectionConverter(this)));
         interfaceConverters.add(new InterfaceConverter(BlockEvent.class, new BlockEventConverter(this)));
         interfaceConverters.add(new InterfaceConverter(PlayerEvent.class, new PlayerEventConverter(this)));
+        interfaceConverters.add(new InterfaceConverter(EntityEvent.class, new EntityEventConverter(this)));
         interfaceConverters.add(new InterfaceConverter(GameRule.class, new GameRuleConverter(this)));
         interfaceConverters.add(new InterfaceConverter(ItemMeta.class, new ItemMetaConverter(this)));
 
