@@ -11,8 +11,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <jetty.version>9.3.7.v20160115</jetty.version>
   </properties>
 
@@ -37,7 +37,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.16.5-R0.1-SNAPSHOT</version>
+      <version>1.18.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -65,8 +65,8 @@
     </dependency> -->
     <dependency>
       <groupId>com.github.seeseemelk</groupId>
-      <artifactId>MockBukkit-v1.16</artifactId>
-      <version>1.5.2</version>
+      <artifactId>MockBukkit-v1.18</artifactId>
+      <version>1.21.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -157,6 +157,10 @@
             <additionalClasspathElements>
               <additionalClasspathElement>${basedir}/target/dependency/MockBukkit-v1.16-1.5.2.jar</additionalClasspathElement>
             </additionalClasspathElements>
+            <argLine>
+              --add-opens java.base/java.net=ALL-UNNAMED
+              --add-opens java.base/java.lang=ALL-UNNAMED
+            </argLine>
           </configuration>
         </plugin>
         <plugin>
