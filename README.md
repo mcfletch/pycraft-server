@@ -55,6 +55,7 @@ server and you do **NOT** want that being done by random people on the
 internet.
 
 ```
+sudo apt install maven openjdk-17-jdk-headless
 mvn -e package
 cp target/PycraftServer-1.0.3.jar ${YOUR_WORLD}/plugins/
 ../run.py -e -d ${YOUR_WORLD}
