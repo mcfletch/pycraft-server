@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Arrays;
 import java.util.UUID;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -51,9 +52,15 @@ public class EntityConverter implements Converter {
             if (player != null) {
                 return player;
             }
+            String search = ((String) value).toLowerCase();
             for (World world : api.getServer().getWorlds()) {
+                for (Player worldPlayer : world.getPlayers()) {
+                    if (worldPlayer.getName().toLowerCase().indexOf(search) > -1) {
+                        return worldPlayer;
+                    }
+                }
                 for (Entity entity : world.getEntities()) {
-                    if (entity.getName() == (String) value) {
+                    if (entity.getName().toLowerCase().indexOf(search) > -1) {
                         return entity;
                     }
                 }
@@ -86,6 +93,9 @@ public class EntityConverter implements Converter {
 
         asMap.put("type", asEntity.getType());
         asMap.put("name", asEntity.getName());
+        if (value instanceof BlockData) {
+            asMap.put("string_value", ((BlockData) value).getAsString());
+        }
         return asMap;
     }
 

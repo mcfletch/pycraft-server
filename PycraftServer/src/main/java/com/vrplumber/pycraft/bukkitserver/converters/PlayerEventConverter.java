@@ -8,6 +8,7 @@ import java.util.HashMap;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
@@ -30,6 +31,8 @@ public class PlayerEventConverter implements Converter {
     public String fromJava(PycraftAPI api, Object value) {
         PlayerEvent asEvent = (PlayerEvent) value;
         Map<String, Object> asMap = new HashMap<String, Object>();
+
+        asMap.put("__type__", value.getClass().getSimpleName());
 
         asMap.put("event_type", asEvent.getEventName());
         asMap.put("player", asEvent.getPlayer());
@@ -63,6 +66,11 @@ public class PlayerEventConverter implements Converter {
             }
             asMap.put("material", asInteract.getMaterial());
         }
+        if (asEvent instanceof PlayerInteractEntityEvent) {
+            asMap.put("hand", ((PlayerInteractEntityEvent) asEvent).getHand());
+            asMap.put("entity", ((PlayerInteractEntityEvent) asEvent).getRightClicked());
+        }
+
         if (asEvent instanceof PlayerInteractAtEntityEvent) {
             asMap.put("clicked_position", ((PlayerInteractAtEntityEvent) asEvent).getClickedPosition());
         }

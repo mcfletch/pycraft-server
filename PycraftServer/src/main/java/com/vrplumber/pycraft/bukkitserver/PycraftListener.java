@@ -34,7 +34,7 @@ import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+// import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.event.player.PlayerLocaleChangeEvent;
@@ -348,11 +348,11 @@ public class PycraftListener implements Listener {
         handleEvent(event);
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerJoinEvent(PlayerJoinEvent event) {
-        PlayerJoinEvent.getHandlerList();
-        handleEvent(event);
-    }
+    // @EventHandler(priority = EventPriority.NORMAL)
+    // public void onPlayerJoinEvent(PlayerJoinEvent event) {
+    // PlayerJoinEvent.getHandlerList();
+    // handleEvent(event);
+    // }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerKickEvent(PlayerKickEvent event) {
@@ -1083,14 +1083,14 @@ public class PycraftListener implements Listener {
     // Fills the logs with constant updates...
     // @EventHandler(priority = EventPriority.NORMAL)
     // public void onVehicleMoveEvent(VehicleMoveEvent event) {
-    //     VehicleMoveEvent.getHandlerList();
-    //     handleEvent(event);
+    // VehicleMoveEvent.getHandlerList();
+    // handleEvent(event);
     // }
 
     // @EventHandler(priority = EventPriority.NORMAL)
     // public void onVehicleUpdateEvent(VehicleUpdateEvent event) {
-    //     VehicleUpdateEvent.getHandlerList();
-    //     handleEvent(event);
+    // VehicleUpdateEvent.getHandlerList();
+    // handleEvent(event);
     // }
 
     @EventHandler(priority = EventPriority.NORMAL)

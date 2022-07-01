@@ -39,7 +39,7 @@ player.PlayerItemBreakEvent
 player.PlayerItemConsumeEvent
 player.PlayerItemDamageEvent
 player.PlayerItemHeldEvent
-player.PlayerJoinEvent
+# player.PlayerJoinEvent
 player.PlayerKickEvent
 player.PlayerLevelChangeEvent
 player.PlayerLocaleChangeEvent

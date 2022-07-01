@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.vrplumber.pycraft.bukkitserver</groupId>
   <artifactId>PycraftServer</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
 
   <name>PycraftServer</name>
   <url>https://github.com/mcfletch/pycraft-server/</url>
@@ -37,7 +37,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.18.2-R0.1-SNAPSHOT</version>
+      <version>1.19-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -65,8 +65,8 @@
     </dependency> -->
     <dependency>
       <groupId>com.github.seeseemelk</groupId>
-      <artifactId>MockBukkit-v1.18</artifactId>
-      <version>1.21.2</version>
+      <artifactId>MockBukkit-v1.19</artifactId>
+      <version>2.29.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -120,6 +120,10 @@
       <id>spigot-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
+    <repository>
+      <id>papermc</id>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
+    </repository>
   </repositories>
   <build>
     <resources>
@@ -155,7 +159,7 @@
           <version>2.22.1</version>
           <configuration>
             <additionalClasspathElements>
-              <additionalClasspathElement>${basedir}/target/dependency/MockBukkit-v1.16-1.5.2.jar</additionalClasspathElement>
+              <additionalClasspathElement>${basedir}/target/dependency/MockBukkit-v1.19-2.2.9.jar</additionalClasspathElement>
             </additionalClasspathElements>
             <argLine>
               --add-opens java.base/java.net=ALL-UNNAMED
