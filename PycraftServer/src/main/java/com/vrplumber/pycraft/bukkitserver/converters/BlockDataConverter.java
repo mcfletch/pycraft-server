@@ -41,7 +41,7 @@ public class BlockDataConverter implements Converter {
         asMap.put("__type__", blockdata.getClass().getSimpleName());
         asMap.put("__namespace__", "BlockData");
         List<String> interfaces = new ArrayList<String>();
-        for (Class provided : NamespaceHandler.removeInterfaceSuperclasses(blockdata.getClass().getInterfaces())) {
+        for (Class provided : blockdata.getClass().getInterfaces()) {
             interfaces.add(provided.getSimpleName());
         }
         asMap.put("interfaces", interfaces);

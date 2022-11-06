@@ -32,7 +32,7 @@ public class ItemMetaConverter implements Converter {
         asMap.put("__type__", meta.getClass().getSimpleName());
         Class[] interfaces = meta.getClass().getInterfaces();
         if (interfaces.length > 0) {
-            asMap.put("__namespace__", interfaces[0].getSimpleName());
+            asMap.put("__namespace__", meta.getClass().getSimpleName());
         }
         if (meta.hasAttributeModifiers()) {
             Map<String, Object> modifiers = new HashMap<String, Object>();

@@ -5,6 +5,7 @@ import com.vrplumber.pycraft.bukkitserver.APIServer;
 import com.vrplumber.pycraft.bukkitserver.PycraftEncoder;
 import com.vrplumber.pycraft.bukkitserver.converters.PycraftConverterRegistry;
 import com.vrplumber.pycraft.bukkitserver.IHandlerRegistry;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -93,6 +94,8 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
   public PycraftEncoder encoder;
   public PycraftConverterRegistry converterRegistry;
   public Map<String, List<PycraftMessage>> subscriptions;
+  public Map<Integer,Object> references;
+  static AtomicInteger referenceCounter = new AtomicInteger(1);
 
   public String lastResponse;
 
@@ -143,6 +146,7 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
     this.encoder = new PycraftEncoder(this.converterRegistry);
     this.subscriptions = new HashMap<String, List<PycraftMessage>>();
     this.namespace = new HashMap<String, Object>();
+    this.references = new HashMap<Integer, Object>();
     try {
       InputStream is = socket.getInputStream();
       OutputStream os = socket.getOutputStream();
@@ -341,6 +345,23 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
 
   public Integer expectInteger(PycraftMessage message, Integer index) throws InvalidParameterException {
     return (Integer) expectType(message, index, Integer.class);
+  }
+
+  public int holdReference( Object value ) {
+    Integer ref = PycraftAPI.referenceCounter.getAndIncrement();
+    this.references.put(ref, value);
+    return ref;
+  }
+  public Object getReference( int key) {
+    Object result = this.references.get(key);
+    if (result == null) {
+      return null;
+    } else {
+      return result;
+    }
+  }
+  public void releaseReference( int key ){
+    this.references.remove(key);
   }
 
   // public EntityType expectEntityType(PycraftMessage message, Integer index)

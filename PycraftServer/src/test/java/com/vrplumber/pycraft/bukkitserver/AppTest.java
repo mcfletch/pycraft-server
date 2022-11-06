@@ -33,6 +33,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.enchantments.Enchantment;
@@ -230,9 +232,10 @@ public class AppTest {
 
     PycraftAPI api = getMockApi();
     api.dispatch("1,__methods__,[]", false);
-    String[] expected = { "World", "Player", "Skeleton", "PycraftServer" };
+    String[] expected = { "World", "Player", "Skeleton", "PycraftServer", "WallSign", "Sign" };
     for (String expect : expected) {
-      assertTrue(api.lastResponse.indexOf(expect) > -1, api.lastResponse);
+      int index = api.lastResponse.indexOf(expect);
+      assertTrue(index > -1, api.lastResponse);
     }
   }
 

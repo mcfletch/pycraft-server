@@ -1,5 +1,7 @@
 package com.vrplumber.pycraft.bukkitserver;
 
+import java.math.BigInteger;
+
 public interface IPycraftAPI {
   public void setWanted(boolean wanted);
 
@@ -10,4 +12,8 @@ public interface IPycraftAPI {
   public String sendResponse(Integer request, String formatted);
 
   public void dispatch(String line, boolean async);
+
+  public int holdReference( Object value );
+  public Object getReference( int key);
+  public void releaseReference( int key ); 
 }

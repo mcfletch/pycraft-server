@@ -16,6 +16,7 @@ import java.net.InetAddress;
 import java.security.InvalidParameterException;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -126,6 +127,7 @@ public class PycraftConverterRegistry {
         // This is really *just* for the test server's mocked worlds
         interfaceConverters.add(new InterfaceConverter(World.class, new WorldConverter(this)));
         interfaceConverters.add(new InterfaceConverter(BlockData.class, new BlockDataConverter(this)));
+        interfaceConverters.add(new InterfaceConverter(BlockState.class, new ReferenceConverter(this)));
         interfaceConverters.add(new InterfaceConverter(Inventory.class, new InventoryConverter(this)));
         interfaceConverters.add(new InterfaceConverter(Server.class, new ServerConverter(this)));
         interfaceConverters.add(new InterfaceConverter(ItemStack.class, new ItemStackConverter(this)));

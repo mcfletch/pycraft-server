@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.vrplumber.pycraft.bukkitserver</groupId>
   <artifactId>PycraftServer</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
 
   <name>PycraftServer</name>
   <url>https://github.com/mcfletch/pycraft-server/</url>
@@ -37,7 +37,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.19-R0.1-SNAPSHOT</version>
+      <version>1.19.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
