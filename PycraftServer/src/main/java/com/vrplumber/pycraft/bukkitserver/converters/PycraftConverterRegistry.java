@@ -2,6 +2,8 @@ package com.vrplumber.pycraft.bukkitserver.converters;
 
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Map;
 import java.util.List;
@@ -115,6 +117,8 @@ public class PycraftConverterRegistry {
         mapping.put(EnchantmentWrapper.class, new EnchantmentConverter(this));
         mapping.put(GameRule.class, new GameRuleConverter(this));
         mapping.put(PotionData.class, new PotionDataConverter(this));
+        mapping.put(PotionEffect.class, new PotionEffectConverter(this));
+        mapping.put(PotionEffectType.class, new EnumConverter(this));
 
         // Now the interfaces, which require a linear scan, so we want to reduce
         // usage...
@@ -137,7 +141,7 @@ public class PycraftConverterRegistry {
         interfaceConverters.add(new InterfaceConverter(PlayerEvent.class, new PlayerEventConverter(this)));
         interfaceConverters.add(new InterfaceConverter(EntityEvent.class, new EntityEventConverter(this)));
         interfaceConverters.add(new InterfaceConverter(GameRule.class, new GameRuleConverter(this)));
-        interfaceConverters.add(new InterfaceConverter(ItemMeta.class, new ItemMetaConverter(this)));
+        interfaceConverters.add(new InterfaceConverter(ItemMeta.class, new ReferenceConverter(this)));
 
     }
 
