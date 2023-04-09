@@ -28,7 +28,12 @@ public class EnumConverter implements Converter {
                 if (asString.indexOf(":") == -1) {
                     asString = String.format("minecraft:%s", asString.toLowerCase());
                 }
-                for (Object defined : finalType.getEnumConstants()) {
+                Object[] enumConstants = finalType.getEnumConstants();
+                if (enumConstants == null) {
+                    throw new InvalidParameterException(
+                        String.format("Enum Type %s returned null from getEnumConstants()", finalType.getName()));
+                }
+                for (Object defined : enumConstants) {
                     try {
                         if (((Keyed) defined).getKey().toString().equals(asString)) {
                             return defined;

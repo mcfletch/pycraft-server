@@ -118,7 +118,8 @@ public class PycraftConverterRegistry {
         mapping.put(GameRule.class, new GameRuleConverter(this));
         mapping.put(PotionData.class, new PotionDataConverter(this));
         mapping.put(PotionEffect.class, new PotionEffectConverter(this));
-        mapping.put(PotionEffectType.class, new EnumConverter(this));
+        mapping.put(PotionEffectType.class, new PotionEffectTypeConverter(this));
+
 
         // Now the interfaces, which require a linear scan, so we want to reduce
         // usage...
