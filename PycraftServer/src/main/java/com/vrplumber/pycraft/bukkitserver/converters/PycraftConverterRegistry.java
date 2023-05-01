@@ -38,6 +38,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentWrapper;
+import org.bukkit.OfflinePlayer;
 
 import com.vrplumber.pycraft.bukkitserver.PycraftAPI;
 import com.vrplumber.pycraft.bukkitserver.converters.Converter;
@@ -128,6 +129,7 @@ public class PycraftConverterRegistry {
         interfaceConverters.add(new InterfaceConverter(Enum.class, new EnumConverter(this)));
         interfaceConverters.add(new InterfaceConverter(Block.class, new BlockConverter(this)));
         interfaceConverters.add(new InterfaceConverter(Player.class, new PlayerConverter(this)));
+        interfaceConverters.add(new InterfaceConverter(OfflinePlayer.class, new OfflinePlayerConverter(this)));
         interfaceConverters.add(new InterfaceConverter(Entity.class, new EntityConverter(this)));
         // This is really *just* for the test server's mocked worlds
         interfaceConverters.add(new InterfaceConverter(World.class, new WorldConverter(this)));
