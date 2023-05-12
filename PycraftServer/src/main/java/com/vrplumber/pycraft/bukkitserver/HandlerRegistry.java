@@ -19,22 +19,28 @@ import java.util.logging.Handler;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Fluid;
+import org.bukkit.GameEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.RegionAccessor;
 import org.bukkit.Server;
+import org.bukkit.Tag;
+import org.bukkit.advancement.Advancement;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.*;
+import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.memory.MemoryKey;
 import org.bukkit.event.block.*;
 import org.bukkit.event.enchantment.*;
 import org.bukkit.event.entity.*;
@@ -47,10 +53,13 @@ import org.bukkit.event.server.*;
 import org.bukkit.event.vehicle.*;
 import org.bukkit.event.weather.*;
 import org.bukkit.event.world.*;
+import org.bukkit.generator.structure.Structure;
+import org.bukkit.generator.structure.StructureType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
+import org.bukkit.loot.LootTable;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -295,6 +304,20 @@ class HandlerRegistry implements IHandlerRegistry {
     exposeClass(PlayerEvent.class);
     exposeClass(PlayerInteractEvent.class);
     exposeClass(PlayerInteractAtEntityEvent.class);
+
+    exposeClass(Advancement.class);
+    exposeClass(GameEvent.class);
+    exposeClass(KeyedBossBar.class);
+
+    exposeClass(LootTable.class);
+    exposeClass(KeyedBossBar.class);
+    exposeClass(MemoryKey.class);
+    exposeClass(RegionAccessor.class);
+    exposeClass(Structure.class);
+    exposeClass(StructureType.class);
+    exposeClass(Tag.class);
+    
+    
 
     // exposeClass(AsyncPlayerPreLoginEvent.class);
     // exposeClass(PlayerAdvancementDoneEvent.class);

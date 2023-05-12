@@ -57,7 +57,7 @@ internet.
 ```
 sudo apt install maven openjdk-17-jdk-headless
 mvn -e package
-cp target/PycraftServer-1.0.6.jar ${YOUR_WORLD}/plugins/
+cp target/PycraftServer-1.0.8.jar ${YOUR_WORLD}/plugins/
 ../run.py -e -d ${YOUR_WORLD}
 ```
 
