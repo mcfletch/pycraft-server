@@ -92,6 +92,7 @@ public class PycraftConverterRegistry {
         mapping.put(String.class, new StringConverter());
         mapping.put(Boolean.class, new BooleanConverter());
         mapping.put(Integer.class, new IntegerConverter());
+        mapping.put(Long.class, new IntegerConverter());
         mapping.put(Double.class, new DoubleConverter());
         mapping.put(Float.class, new FloatConverter());
         mapping.put(UUID.class, new UUIDConverter(this));
