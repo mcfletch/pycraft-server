@@ -8,7 +8,9 @@ import com.vrplumber.pycraft.bukkitserver.converters.Converter;
 public class IntegerConverter implements Converter {
     /* Given a message and an index convert the value to an instance of T */
     public Object toJava(PycraftAPI api, Object value, Class finalType) {
-        if (value instanceof Integer) {
+        if (value instanceof Long) {
+            return (Long) value;
+        } else if (value instanceof Integer) {
             return (Integer) value;
         } else if (value instanceof Boolean) {
             if ((Boolean) value) {
