@@ -57,6 +57,7 @@ import com.vrplumber.pycraft.bukkitserver.converters.UUIDConverter;
 import com.vrplumber.pycraft.bukkitserver.converters.GameRuleConverter;
 import com.vrplumber.pycraft.bukkitserver.converters.ItemMetaConverter;
 import com.vrplumber.pycraft.bukkitserver.converters.PotionDataConverter;
+import com.vrplumber.pycraft.bukkitserver.converters.AttributeModifierConverter;
 
 public class PycraftConverterRegistry {
     /* Registers .class => Converter.toJava(api, value, finalType) converter */
@@ -145,6 +146,7 @@ public class PycraftConverterRegistry {
         interfaceConverters.add(new InterfaceConverter(EntityEvent.class, new EntityEventConverter(this)));
         interfaceConverters.add(new InterfaceConverter(GameRule.class, new GameRuleConverter(this)));
         interfaceConverters.add(new InterfaceConverter(ItemMeta.class, new ReferenceConverter(this)));
+        interfaceConverters.add(new InterfaceConverter(AttributeModifierConverter.class, new AttributeModifierConverter(this)));
 
     }
 
