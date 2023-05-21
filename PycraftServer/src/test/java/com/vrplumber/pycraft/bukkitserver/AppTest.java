@@ -9,6 +9,7 @@ import com.vrplumber.pycraft.bukkitserver.TestListener;
 import com.vrplumber.pycraft.bukkitserver.APIServer;
 import com.vrplumber.pycraft.bukkitserver.PycraftServerPlugin;
 import com.vrplumber.pycraft.bukkitserver.converters.PycraftConverterRegistry;
+import org.bukkit.Location;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +40,7 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.util.Vector;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -590,6 +592,18 @@ public class AppTest {
         player.getUniqueId().toString()), false);
     // api.dispatch(String.format("1,Potion.setMetadata,[[0,\"%s\"],{\"ref\":\"x\"}]",
     // player.getUniqueId().toString()), false);
+
+  }
+
+  @Test
+  public void testConvertBoat() {
+    World world = server.getWorld("sample-world");
+    Location loc = new Location(world,0.,0.,0.,(float)0.,(float)0.);
+    Boat boat = world.spawn(loc, Boat.class);
+    PycraftConverterRegistry registry = new PycraftConverterRegistry();
+    PycraftAPI api = getMockApi();
+    String encoded = registry.fromJava(api, boat);
+    
 
   }
 
