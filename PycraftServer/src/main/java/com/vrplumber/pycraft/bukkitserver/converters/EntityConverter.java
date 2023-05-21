@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.logging.Logger;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.util.Vector;
@@ -74,29 +76,35 @@ public class EntityConverter implements Converter {
     }
 
     public Map<String, Object> entityAsMapping(PycraftAPI api, Object value) {
-        org.bukkit.entity.Entity asEntity = (Entity) value;
-        Location loc = asEntity.getLocation();
-        Map<String, Object> asMap = new HashMap<String, Object>();
-        asMap.put("__type__", asEntity.getClass().getSimpleName());
-        asMap.put("__namespace__", "Entity");
-        asMap.put("location", loc);
         try {
-            asMap.put("uuid", asEntity.getUniqueId());
-        } catch (Exception e) {
-            // Mock bukkit exception...
-        }
-        List<String> interfaces = new ArrayList<String>();
-        for (Class provided : NamespaceHandler.removeInterfaceSuperclasses(asEntity.getClass().getInterfaces())) {
-            interfaces.add(provided.getSimpleName());
-        }
-        asMap.put("interfaces", interfaces);
+            org.bukkit.entity.Entity asEntity = (Entity) value;
+            Location loc = asEntity.getLocation();
+            Map<String, Object> asMap = new HashMap<String, Object>();
+            asMap.put("__type__", asEntity.getClass().getSimpleName());
+            asMap.put("__namespace__", "Entity");
+            asMap.put("location", loc);
+            try {
+                asMap.put("uuid", asEntity.getUniqueId());
+            } catch (Exception e) {
+                // Mock bukkit exception...
+            }
+            List<String> interfaces = new ArrayList<String>();
+            for (Class provided : NamespaceHandler.removeInterfaceSuperclasses(asEntity.getClass().getInterfaces())) {
+                interfaces.add(provided.getSimpleName());
+            }
+            asMap.put("interfaces", interfaces);
 
-        asMap.put("type", asEntity.getType());
-        asMap.put("name", asEntity.getName());
-        if (value instanceof BlockData) {
-            asMap.put("string_value", ((BlockData) value).getAsString());
+            asMap.put("type", asEntity.getType());
+            asMap.put("name", asEntity.getName());
+            if (value instanceof BlockData) {
+                asMap.put("string_value", ((BlockData) value).getAsString());
+            }
+            return asMap;
+        } catch (Exception err) {
+            Logger log = api.getLogger();
+            log.warning(String.format("Failure in entity conversion: %s", err.getStackTrace()));
+            return null;
         }
-        return asMap;
     }
 
     public String fromJava(PycraftAPI api, Object value) {

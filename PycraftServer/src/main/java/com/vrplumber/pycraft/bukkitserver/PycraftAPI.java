@@ -88,7 +88,7 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
   public IHandlerRegistry registry;
 
   public APIServer server;
-  public Socket socket;
+  // public Socket socket;
   public BufferedWriter sender;
   public BufferedReader reader;
   public PycraftEncoder encoder;
@@ -111,6 +111,8 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
       } catch (IOException err) {
         err.printStackTrace();
         wanted = false;
+        Logger log = getLogger();
+        log.warning("Failed to write to the server, dropping connection");
       }
     }
     return false;
@@ -138,9 +140,9 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
     return to_send;
   }
 
-  PycraftAPI(APIServer server, Socket socket, IHandlerRegistry registry) {
+  PycraftAPI(APIServer server, InputStream is, OutputStream os, IHandlerRegistry registry) {
     this.server = server;
-    this.socket = socket;
+    // this.socket = socket;
     this.registry = registry;
     this.converterRegistry = new PycraftConverterRegistry();
     this.encoder = new PycraftEncoder(this.converterRegistry);
@@ -148,8 +150,8 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
     this.namespace = new HashMap<String, Object>();
     this.references = new HashMap<Integer, Object>();
     try {
-      InputStream is = socket.getInputStream();
-      OutputStream os = socket.getOutputStream();
+      // InputStream is = socket.getInputStream();
+      // OutputStream os = socket.getOutputStream();
       reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
       sender = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
     } catch (IOException err) {
@@ -171,7 +173,7 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
       while (wanted) {
         String line = reader.readLine();
         if (line == null) {
-          log.warning(String.format("Disconnection from %s", this.socket.getInetAddress().toString()));
+          log.warning("Disconnection from server");
           this.wanted = false;
         } else {
           log.warning(String.format("Incoming line %s", line));
@@ -185,13 +187,6 @@ public class PycraftAPI implements Runnable, IPycraftAPI {
     } catch (IOException err) {
       this.wanted = false;
       err.printStackTrace();
-    }
-    if (!this.socket.isClosed()) {
-      try {
-        this.socket.close();
-      } catch (IOException err) {
-        err.printStackTrace();
-      }
     }
   }
 

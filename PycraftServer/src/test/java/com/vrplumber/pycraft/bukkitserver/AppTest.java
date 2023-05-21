@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.io.OutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -83,6 +85,7 @@ public class AppTest {
   private ServerMock server;
   private Player player;
 
+
   @BeforeAll
   public void setUp() {
     server = new ServerMock();
@@ -97,17 +100,12 @@ public class AppTest {
     APIServer apiServer = new APIServer(registry);
     apiServer.setPlugin(plugin);
     plugin.setAPIServer(apiServer);
-    Socket fakeSocket = mock(Socket.class);
-    OutputStream fakeOutputStream = mock(OutputStream.class);
-    InputStream fakeInputStream = mock(InputStream.class);
-    try {
-      when(fakeSocket.getOutputStream()).thenReturn(fakeOutputStream);
-      when(fakeSocket.getInputStream()).thenReturn(fakeInputStream);
-    } catch (IOException err) {
-      err.printStackTrace();
-    }
+    // OutputStream fakeOutputStream = mock(OutputStream.class);
+    // InputStream fakeInputStream = mock(InputStream.class);
+    InputStream fakeInputStream = new ByteArrayInputStream(new byte[0]);
+    OutputStream fakeOutputStream = new ByteArrayOutputStream();
 
-    api = new PycraftAPI(apiServer, fakeSocket, registry);
+    api = new PycraftAPI(apiServer, fakeInputStream,fakeOutputStream,  registry);
     apiServer.clients.add(api);
   }
 
@@ -603,7 +601,7 @@ public class AppTest {
     PycraftConverterRegistry registry = new PycraftConverterRegistry();
     PycraftAPI api = getMockApi();
     String encoded = registry.fromJava(api, boat);
-    
+    assertTrue(false);
 
   }
 

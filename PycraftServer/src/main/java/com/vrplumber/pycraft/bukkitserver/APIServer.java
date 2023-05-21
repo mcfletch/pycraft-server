@@ -78,7 +78,7 @@ public class APIServer implements Runnable {
         Socket socket = null;
         try {
           socket = serverSocket.accept();
-          PycraftAPI handler = new PycraftAPI(this, socket, handlerRegistry);
+          PycraftAPI handler = new PycraftAPI(this, socket.getInputStream(), socket.getOutputStream(), handlerRegistry);
           clients.add(handler);
           log.info(String.format("Connection from: %s (#%d)", socket.getInetAddress().toString(), clients.size()));
           Thread clientThread = new Thread(handler);
